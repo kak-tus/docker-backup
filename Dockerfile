@@ -22,7 +22,6 @@ ENV BACKUP_TARGET_USER=
 ENV BACKUP_TARGET_HOST=
 ENV BACKUP_TARGET_MODULE=
 ENV BACKUP_TARGET_PATH=
-ENV BACKUP_TARGET_FULL_PATH=
 
 COPY rsyncd_password_file.template /root/rsyncd_password_file.template
 COPY backup /etc/periodic/daily/backup
