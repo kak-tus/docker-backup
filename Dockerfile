@@ -26,4 +26,4 @@ ENV BACKUP_TARGET_PATH=
 COPY rsyncd_password_file.template /root/rsyncd_password_file.template
 COPY backup /etc/periodic/daily/backup
 
-CMD crond -f
+CMD [ "crond", "-f" ]
