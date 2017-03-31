@@ -1,20 +1,20 @@
 FROM alpine:3.5
 
 ENV CONSUL_TEMPLATE_VERSION=0.18.0
-
-COPY consul-template_${CONSUL_TEMPLATE_VERSION}_SHA256SUMS /usr/local/bin/consul-template_${CONSUL_TEMPLATE_VERSION}_SHA256SUMS
+ENV CONSUL_TEMPLATE_SHA256=f7adf1f879389e7f4e881d63ef3b84bce5bc6e073eb7a64940785d32c997bc4b
 
 RUN \
-  apk add --update-cache curl unzip duplicity rsync \
+  apk add --no-cache --virtual .build-deps curl unzip \
+
+  && apk add --no-cache duplicity rsync \
 
   && cd /usr/local/bin \
   && curl -L https://releases.hashicorp.com/consul-template/${CONSUL_TEMPLATE_VERSION}/consul-template_${CONSUL_TEMPLATE_VERSION}_linux_amd64.zip -o consul-template_${CONSUL_TEMPLATE_VERSION}_linux_amd64.zip \
-  && sha256sum -c consul-template_${CONSUL_TEMPLATE_VERSION}_SHA256SUMS \
+  && echo -n "$CONSUL_TEMPLATE_SHA256  consul-template_${CONSUL_TEMPLATE_VERSION}_linux_amd64.zip" | sha256sum -c - \
   && unzip consul-template_${CONSUL_TEMPLATE_VERSION}_linux_amd64.zip \
-  && rm consul-template_${CONSUL_TEMPLATE_VERSION}_linux_amd64.zip consul-template_${CONSUL_TEMPLATE_VERSION}_SHA256SUMS \
+  && rm consul-template_${CONSUL_TEMPLATE_VERSION}_linux_amd64.zip \
 
-  && apk del curl unzip \
-  && rm -rf /var/cache/apk/*
+  && apk del .build-deps
 
 ENV BACKUP_SOURCE=
 
