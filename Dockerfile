@@ -1,7 +1,7 @@
 FROM alpine:3.5
 
-ENV CONSUL_TEMPLATE_VERSION=0.18.0
-ENV CONSUL_TEMPLATE_SHA256=f7adf1f879389e7f4e881d63ef3b84bce5bc6e073eb7a64940785d32c997bc4b
+ENV CONSUL_TEMPLATE_VERSION=0.18.2
+ENV CONSUL_TEMPLATE_SHA256=6fee6ab68108298b5c10e01357ea2a8e4821302df1ff9dd70dd9896b5c37217c
 
 RUN \
   apk add --no-cache --virtual .build-deps curl unzip \
@@ -22,6 +22,8 @@ ENV BACKUP_TARGET_USER=
 ENV BACKUP_TARGET_HOST=
 ENV BACKUP_TARGET_MODULE=
 ENV BACKUP_TARGET_PATH=
+
+ENV BACKUP_MODE=
 
 COPY rsyncd_password_file.template /root/rsyncd_password_file.template
 COPY backup /etc/periodic/daily/backup
