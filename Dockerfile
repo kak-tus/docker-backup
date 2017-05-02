@@ -11,6 +11,7 @@ RUN \
   && apk add --no-cache \
     duplicity \
     rsync \
+    tzdata \
 
   && cd /usr/local/bin \
   && curl -L https://releases.hashicorp.com/consul-template/${CONSUL_TEMPLATE_VERSION}/consul-template_${CONSUL_TEMPLATE_VERSION}_linux_amd64.zip -o consul-template_${CONSUL_TEMPLATE_VERSION}_linux_amd64.zip \
@@ -31,6 +32,9 @@ ENV BACKUP_MODE=
 ENV BACKUP_HOUR=0
 ENV BACKUP_MINUTE=0
 ENV BACKUP_IS_RANDOM_DELAY=
+
+ENV SET_CONTAINER_TIMEZONE=true
+ENV CONTAINER_TIMEZONE=Europe/Moscow
 
 COPY rsyncd_password_file.template /root/rsyncd_password_file.template
 COPY backup.sh /usr/local/bin/backup.sh
