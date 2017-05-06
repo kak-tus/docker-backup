@@ -15,7 +15,7 @@ fi
 
 ( crontab -l ; echo "$BACKUP_MINUTE $BACKUP_HOUR * * * $delay /usr/local/bin/backup.sh" ) | crontab -
 
-crond -f
+crond -f &
 child=$!
 
 trap "kill $child" SIGTERM SIGINT
