@@ -17,7 +17,8 @@ if [ "$BACKUP_MODE" = "sync" ]; then
   rsync -r \
     --password-file=/etc/rsyncd_password_file \
     ${BACKUP_SOURCE}/ \
-    ${BACKUP_TARGET_USER}@${BACKUP_TARGET_HOST}::${BACKUP_TARGET_MODULE}${BACKUP_TARGET_PATH}/
+    ${BACKUP_TARGET_USER}@${BACKUP_TARGET_HOST}::${BACKUP_TARGET_MODULE}${BACKUP_TARGET_PATH}/ \
+  && ( find "$BACKUP_SOURCE" -not -newermt '7 days ago' -type f | xargs -I QQ rm QQ )
 else
   duplicity --volsize 256 --no-encryption --full-if-older-than="1M" \
     --rsync-options="--password-file=/etc/rsyncd_password_file" \
