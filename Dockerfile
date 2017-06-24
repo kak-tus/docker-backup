@@ -1,7 +1,7 @@
-FROM alpine:3.5
+FROM alpine:3.6
 
-ENV CONSUL_TEMPLATE_VERSION=0.18.2
-ENV CONSUL_TEMPLATE_SHA256=6fee6ab68108298b5c10e01357ea2a8e4821302df1ff9dd70dd9896b5c37217c
+ENV CONSUL_TEMPLATE_VERSION=0.18.5
+ENV CONSUL_TEMPLATE_SHA256=b0cd6e821d6150c9a0166681072c12e906ed549ef4588f73ed58c9d834295cd2
 
 RUN \
   apk add --no-cache --virtual .build-deps \
@@ -9,8 +9,10 @@ RUN \
     unzip \
 
   && apk add --no-cache \
+    busybox-suid \
     duplicity \
     rsync \
+    su-exec \
     tzdata \
 
   && cd /usr/local/bin \
@@ -36,7 +38,10 @@ ENV BACKUP_IS_RANDOM_DELAY=
 ENV SET_CONTAINER_TIMEZONE=true
 ENV CONTAINER_TIMEZONE=Europe/Moscow
 
-COPY rsyncd_password_file.template /root/rsyncd_password_file.template
+ENV USER_UID=1000
+ENV USER_GID=1000
+
+COPY rsyncd_password_file.template /etc/rsyncd_password_file.template
 COPY backup.sh /usr/local/bin/backup.sh
 COPY start.sh /usr/local/bin/start.sh
 
