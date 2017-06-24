@@ -13,12 +13,19 @@ if [ -n "$BACKUP_IS_RANDOM_DELAY" ]; then
   delay="sleep ${RANDOM:0:2}m ;"
 fi
 
-deluser user 2>/dev/null
-delgroup user 2>/dev/null
-addgroup -g $USER_GID user
-adduser -h /home/user -G user -D -u $USER_UID user
+if [ -z "$BACKUP_USER_ROOT" ]; then
+  deluser user 2>/dev/null
+  delgroup user 2>/dev/null
+  addgroup -g $USER_GID user
+  adduser -h /home/user -G user -D -u $USER_UID user
 
-echo "$BACKUP_MINUTE $BACKUP_HOUR * * * $delay /usr/local/bin/backup.sh" | su-exec user crontab -
+  touch /etc/rsyncd_password_file
+  chown user:user /etc/rsyncd_password_file
+
+  echo "$BACKUP_MINUTE $BACKUP_HOUR * * * $delay /usr/local/bin/backup.sh" | su-exec user crontab -
+else
+  echo "$BACKUP_MINUTE $BACKUP_HOUR * * * $delay /usr/local/bin/backup.sh" | crontab -
+fi
 
 crond -f &
 child=$!
