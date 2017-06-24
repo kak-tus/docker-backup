@@ -42,7 +42,7 @@ ENV BACKUP_USER_ROOT=
 ENV USER_UID=1000
 ENV USER_GID=1000
 
-COPY rsyncd_password_file.template /etc/rsyncd_password_file.template
+COPY rsyncd_password_file.template /etc/backup/rsyncd_password_file.template
 COPY backup.sh /usr/local/bin/backup.sh
 COPY start.sh /usr/local/bin/start.sh
 

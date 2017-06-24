@@ -19,8 +19,7 @@ if [ -z "$BACKUP_USER_ROOT" ]; then
   addgroup -g $USER_GID user
   adduser -h /home/user -G user -D -u $USER_UID user
 
-  touch /etc/rsyncd_password_file
-  chown user:user /etc/rsyncd_password_file
+  chown -R user:user /etc/backup
 
   echo "$BACKUP_MINUTE $BACKUP_HOUR * * * $delay /usr/local/bin/backup.sh" | su-exec user crontab -
 else
