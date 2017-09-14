@@ -11,6 +11,7 @@ RUN \
   && apk add --no-cache \
     busybox-suid \
     duplicity \
+    openssh-client \
     rsync \
     su-exec \
     tzdata \
@@ -29,6 +30,7 @@ ENV BACKUP_TARGET_USER=
 ENV BACKUP_TARGET_HOST=
 ENV BACKUP_TARGET_MODULE=
 ENV BACKUP_TARGET_PATH=
+ENV BACKUP_TARGET_MODE=daemon
 
 ENV BACKUP_MODE=
 ENV BACKUP_HOUR=0
@@ -42,7 +44,7 @@ ENV BACKUP_USER_ROOT=
 ENV USER_UID=1000
 ENV USER_GID=1000
 
-COPY rsyncd_password_file.template /etc/backup/rsyncd_password_file.template
+COPY templates /etc/backup/templates
 COPY backup.sh /usr/local/bin/backup.sh
 COPY start.sh /usr/local/bin/start.sh
 
