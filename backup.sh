@@ -38,7 +38,7 @@ eval "rsync -r $rsync_args $rsync_tmp_src $rsync_tmp_target"
 rm -rf "/tmp${BACKUP_TARGET_PATH}"
 
 if [ "$BACKUP_MODE" = "sync" ]; then
-  eval "rsync -r $rsync_args ${BACKUP_SOURCE}/ $rsync_target && ( find \"$BACKUP_SOURCE\" -mtime +7 -type f | xargs -I QQ rm QQ )"
+  eval "rsync -r $rsync_args ${BACKUP_SOURCE}/ $rsync_target && ( find \"$BACKUP_SOURCE\" -mtime +$BACKUP_DELETE_DAYS_OLDER -type f | xargs -I QQ rm QQ )"
 else
   eval "ionice -c 3 duplicity --volsize 256 --no-encryption --full-if-older-than=\"1M\" --rsync-options=\"$dupl_args\" ${BACKUP_SOURCE} rsync://$dupl_target"
 fi
